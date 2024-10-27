@@ -2,7 +2,8 @@
   "name": "realm-be",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch src/index.ts",
+    "format": "prettier --config .prettierrc.mjs --write ."
   },
   "dependencies": {
     "@hono/node-server": "^1.13.2",
