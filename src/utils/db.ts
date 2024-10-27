@@ -1,4 +1,3 @@
-// src/db.ts
 import fs from "fs";
 import path from "path";
 import { type CommentItem as Item, defaultItem } from "../spec/comment.js";
@@ -18,7 +17,7 @@ const getFilePath = (domain: string, reqPath: string) => {
     "..",
     "data",
     sanitizedDomain,
-    `${sanitizedPath}.json`,
+    `${sanitizedPath}.json`
   );
 };
 
@@ -42,7 +41,7 @@ const getAll = (domain: string, reqPath: string): Item[] =>
 const getById = (
   domain: string,
   reqPath: string,
-  id: string,
+  id: string
 ): Item | undefined => readData(domain, reqPath).find((item) => item.id === id);
 const create = (domain: string, reqPath: string, item: Partial<Item>) => {
   const data = readData(domain, reqPath);
@@ -58,7 +57,7 @@ const update = (
   domain: string,
   reqPath: string,
   id: string,
-  updatedItem: Partial<Item>,
+  updatedItem: Partial<Item>
 ) => {
   const data = readData(domain, reqPath);
   const index = data.findIndex((item) => item.id === id);
