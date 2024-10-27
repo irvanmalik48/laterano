@@ -15,6 +15,7 @@ const getFilePath = (domain: string, reqPath: string) => {
   return path.join(
     __dirname,
     "..",
+    "..",
     "data",
     sanitizedDomain,
     `${sanitizedPath}.json`,
