@@ -1,2 +1,3 @@
-# realm-be
+# Realm's backend
 
+Licensed in RCCL.
