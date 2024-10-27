@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { type CommentItem as Item, defaultItem } from "../spec/comment.js";
+import { createId } from "@paralleldrive/cuid2";
 
 const ensureDirExists = (dir: string) => {
   if (!fs.existsSync(dir)) {
@@ -36,23 +37,37 @@ const writeData = (domain: string, reqPath: string, data: Item[]) => {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 };
 
-const getAll = (domain: string, reqPath: string): Item[] =>
+const getAllByPath = (domain: string, reqPath: string): Item[] =>
   readData(domain, reqPath);
+
+const getAllByDomain = (domain: string): Item[] => {
+  const dirPath = path.join(__dirname, "..", "..", "data", domain);
+  if (!fs.existsSync(dirPath)) {
+    return [];
+  }
+  return fs.readdirSync(dirPath).reduce((acc, file) => {
+    const data = readData(domain, file.replace(".json", ""));
+    return [...acc, ...data];
+  }, [] as Item[]);
+};
+
 const getById = (
   domain: string,
   reqPath: string,
   id: string
 ): Item | undefined => readData(domain, reqPath).find((item) => item.id === id);
+
 const create = (domain: string, reqPath: string, item: Partial<Item>) => {
   const data = readData(domain, reqPath);
   const newItem: Item = {
     ...defaultItem,
-    id: Date.now().toString(),
+    id: createId(),
     ...item,
   };
   data.push(newItem);
   writeData(domain, reqPath, data);
 };
+
 const update = (
   domain: string,
   reqPath: string,
@@ -66,10 +81,11 @@ const update = (
     writeData(domain, reqPath, data);
   }
 };
+
 const remove = (domain: string, reqPath: string, id: string) => {
   const data = readData(domain, reqPath);
   const updatedData = data.filter((item) => item.id !== id);
   writeData(domain, reqPath, updatedData);
 };
 
-export { getAll, getById, create, update, remove };
+export { getAllByPath, getAllByDomain, getById, create, update, remove };
