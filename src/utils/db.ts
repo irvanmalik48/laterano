@@ -59,13 +59,17 @@ const getById = (
 
 const create = (domain: string, reqPath: string, item: Partial<Item>) => {
   const data = readData(domain, reqPath);
+  const nowTime = Date.now();
   const newItem: Item = {
     ...defaultItem,
     id: createId(),
+    date: nowTime,
+    dateEdited: nowTime,
     ...item,
   };
   data.push(newItem);
   writeData(domain, reqPath, data);
+  return newItem;
 };
 
 const update = (
@@ -76,16 +80,19 @@ const update = (
 ) => {
   const data = readData(domain, reqPath);
   const index = data.findIndex((item) => item.id === id);
-  if (index !== -1) {
-    data[index] = { ...data[index], ...updatedItem };
+  if (index && index !== -1) {
+    data[index] = { ...data[index], ...updatedItem, dateEdited: Date.now() };
     writeData(domain, reqPath, data);
+    return data[index];
   }
+  return { error: "Item not found" };
 };
 
 const remove = (domain: string, reqPath: string, id: string) => {
   const data = readData(domain, reqPath);
   const updatedData = data.filter((item) => item.id !== id);
   writeData(domain, reqPath, updatedData);
+  return { success: true };
 };
 
 export { getAllByPath, getAllByDomain, getById, create, update, remove };
