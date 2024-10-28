@@ -10,16 +10,7 @@ const ensureDirExists = (dir: string) => {
 };
 
 const getFilePath = (domain: string, reqPath: string) => {
-  const sanitizedDomain = domain.replace(/[^a-z0-9]/gi, "_").toLowerCase(); // Sanitize domain
-  const sanitizedPath = reqPath.replace(/\//g, "_"); // Sanitize path
-  return path.join(
-    __dirname,
-    "..",
-    "..",
-    "data",
-    sanitizedDomain,
-    `${sanitizedPath}.json`
-  );
+  return path.join(__dirname, "..", "..", "data", domain, `${reqPath}.json`);
 };
 
 const readData = (domain: string, reqPath: string): Item[] => {
