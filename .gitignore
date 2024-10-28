@@ -27,6 +27,3 @@ lerna-debug.log*
 
 # misc
 .DS_Store
-
-# git push
-push.sh
