@@ -19,8 +19,8 @@ app.get("/", (c) => {
 
 app.get("/comments", getAllCommentsByDomainHandler);
 app.get("/comments/:path", getAllCommentsByPathHandler);
-app.get("/comment/:path/:id", getComment);
-app.post("/comment", postCommentHandler);
+app.get("/comments/:path/:id", getComment);
+app.post("/comment/:path", postCommentHandler);
 app.put("/comment/:path/:id", updateCommentHandler);
 app.delete("/comment/:path/:id", deleteCommentHandler);
 
