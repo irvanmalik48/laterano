@@ -2,6 +2,10 @@ import fs from "fs";
 import path from "path";
 import { type CommentItem as Item, defaultItem } from "../spec/comment.js";
 import { createId } from "@paralleldrive/cuid2";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const ensureDirExists = (dir: string) => {
   if (!fs.existsSync(dir)) {
