@@ -1,5 +1,6 @@
 import type { Handler } from "hono";
 import { create, remove, update } from "../utils/db.js";
+import { checkDomain } from "../utils/handlers.js";
 
 const postCommentHandler: Handler = async (c) => {
   const domain = c.req.header("X-Domain");
@@ -12,6 +13,10 @@ const postCommentHandler: Handler = async (c) => {
 
   if (!body.has("content")) {
     return c.json({ error: "Comment is required" }, 400);
+  }
+
+  if (!checkDomain(domain)) {
+    return c.json({ error: "Domain not allowed" }, 403);
   }
 
   const parsedBody = {
@@ -40,6 +45,10 @@ const updateCommentHandler: Handler = async (c) => {
     return c.json({ error: "Comment is required" }, 400);
   }
 
+  if (!checkDomain(domain)) {
+    return c.json({ error: "Domain not allowed" }, 403);
+  }
+
   const parsedBody = {
     content: body.get("content") as string,
     name: (body.get("name") ?? "Anonymous") as string,
@@ -59,6 +68,10 @@ const deleteCommentHandler: Handler = (c) => {
 
   if (!domain || !path || !id) {
     return c.json({ error: "Domain, Path, and ID are required" }, 400);
+  }
+
+  if (!checkDomain(domain)) {
+    return c.json({ error: "Domain not allowed" }, 403);
   }
 
   const comment = remove(domain, path, id);

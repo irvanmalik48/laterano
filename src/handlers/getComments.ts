@@ -1,11 +1,16 @@
 import type { Handler } from "hono";
 import { getAllByDomain, getAllByPath, getById } from "../utils/db.js";
+import { checkDomain } from "../utils/handlers.js";
 
 const getAllCommentsByDomainHandler: Handler = (c) => {
   const domain = c.req.header("X-Domain");
 
   if (!domain) {
     return c.json({ error: "Domain is required" }, 400);
+  }
+
+  if (!checkDomain(domain)) {
+    return c.json({ error: "Domain not allowed" }, 403);
   }
 
   const comments = getAllByDomain(domain);
@@ -21,6 +26,10 @@ const getAllCommentsByPathHandler: Handler = (c) => {
     return c.json({ error: "Domain and Path are required" }, 400);
   }
 
+  if (!checkDomain(domain)) {
+    return c.json({ error: "Domain not allowed" }, 403);
+  }
+
   const comments = getAllByPath(domain, path);
 
   return c.json(comments);
@@ -33,6 +42,10 @@ const getComment: Handler = (c) => {
 
   if (!domain || !path || !id) {
     return c.json({ error: "Domain, Path, and ID are required" }, 400);
+  }
+
+  if (!checkDomain(domain)) {
+    return c.json({ error: "Domain not allowed" }, 403);
   }
 
   const comment = getById(domain, path, id);
