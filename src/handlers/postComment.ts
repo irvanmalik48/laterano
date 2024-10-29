@@ -3,7 +3,7 @@ import { create, remove, update } from "../utils/db.js";
 
 const postCommentHandler: Handler = async (c) => {
   const domain = c.req.header("X-Domain");
-  const path = c.req.header("X-Path");
+  const path = c.req.param("path");
   const body = await c.req.formData();
 
   if (!domain || !path) {
@@ -28,8 +28,8 @@ const postCommentHandler: Handler = async (c) => {
 
 const updateCommentHandler: Handler = async (c) => {
   const domain = c.req.header("X-Domain");
-  const path = c.req.header("X-Path");
-  const id = c.req.header("X-Id");
+  const path = c.req.param("path");
+  const id = c.req.param("id");
   const body = await c.req.formData();
 
   if (!domain || !path || !id) {
@@ -54,8 +54,8 @@ const updateCommentHandler: Handler = async (c) => {
 
 const deleteCommentHandler: Handler = (c) => {
   const domain = c.req.header("X-Domain");
-  const path = c.req.header("X-Path");
-  const id = c.req.header("X-Id");
+  const path = c.req.param("path");
+  const id = c.req.param("id");
 
   if (!domain || !path || !id) {
     return c.json({ error: "Domain, Path, and ID are required" }, 400);

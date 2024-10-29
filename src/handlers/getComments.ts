@@ -15,7 +15,7 @@ const getAllCommentsByDomainHandler: Handler = (c) => {
 
 const getAllCommentsByPathHandler: Handler = (c) => {
   const domain = c.req.header("X-Domain");
-  const path = c.req.header("X-Path");
+  const path = c.req.param("path");
 
   if (!domain || !path) {
     return c.json({ error: "Domain and Path are required" }, 400);
@@ -28,8 +28,8 @@ const getAllCommentsByPathHandler: Handler = (c) => {
 
 const getComment: Handler = (c) => {
   const domain = c.req.header("X-Domain");
-  const path = c.req.header("X-Path");
-  const id = c.req.header("X-Id");
+  const path = c.req.param("path");
+  const id = c.req.param("id");
 
   if (!domain || !path || !id) {
     return c.json({ error: "Domain, Path, and ID are required" }, 400);
